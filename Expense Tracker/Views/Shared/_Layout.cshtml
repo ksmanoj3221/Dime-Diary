@@ -14,65 +14,80 @@
     <script src="https://cdn.syncfusion.com/ej2/27.1.48/dist/ej2.min.js"></script>
 </head>
 <body class="e-bigger">
-
-    <partial name="_SideBar" />
-    <div class="dock-target">
-        <nav class="navbar sticky-top">
-            <div class="container-fluid py-2 px-4">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <div>
-                    <i class="fa-solid fa-bell"></i>
-                    <i class="fa-solid fa-message"></i>
-                    <img class="profile-pic" src="~/profile.jpg" />
+    @if (User.Identity.IsAuthenticated)
+    {
+        <partial name="_SideBar" />
+        <div class="dock-target">
+            <nav class="navbar sticky-top">
+                <div class="container-fluid py-2 px-4">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <div>
+                        <i class="fa-solid fa-bell"></i>
+                        <i class="fa-solid fa-message"></i>
+                        <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-link text-light" style="padding: 0; border: none;">
+                                <i class="fa-solid fa-sign-out-alt"></i> Logout
+                            </button>
+                        </form>
+                    </div>
                 </div>
-            </div>
-        </nav>
-   
+            </nav>
 
-        <div class="main-content">
 
-            <div class="container mt-5">
-                <div class="row justify-content-center">
-                    <div class="@(ViewData["isDashboard"] == null?"col-md-10":"col-md-12")">
-                        <main role="main" class="pb-3">
-                            @if (ViewData["isDashboard"] == null)
-                            {
-                                <div class="row">
-                                    <div class="col-md-7">
-                                        <div class="d-flex flex-column mb-5">
-                                            <div class="d-flex mb-1">
-                                                <div class="flex-grow-1">
-                                                    <h3 class="fw-bold">@ViewData["PageTitle"]</h3>
+            <div class="main-content">
+
+                <div class="container mt-5">
+                    <div class="row justify-content-center">
+                        <div class="@(ViewData["isDashboard"] == null?"col-md-10":"col-md-12")">
+                            <main role="main" class="pb-3">
+                                @if (ViewData["isDashboard"] == null)
+                                {
+                                    <div class="row">
+                                        <div class="col-md-7">
+                                            <div class="d-flex flex-column mb-5">
+                                                <div class="d-flex mb-1">
+                                                    <div class="flex-grow-1">
+                                                        <h3 class="fw-bold">@ViewData["PageTitle"]</h3>
+                                                    </div>
+                                                    <div>
+                                                        @if (ViewData["PageActionText"] != null)
+                                                        {
+                                                            <a class="btn btn-success" href="@ViewData["PageActionUrl"]">
+                                                                @ViewData["PageActionText"]
+                                                            </a>
+                                                        }
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    @if (ViewData["PageActionText"] != null)
-                                                    {
-                                                        <a class="btn btn-success" href="@ViewData["PageActionUrl"]">
-                                                            @ViewData["PageActionText"]
-                                                        </a>
-                                                    }
-                                                </div>
+                                                <ejs-breadcrumb id="breadcrumb"
+                                                                separatorTemplate="@Html.Raw("<span class='fa-solid fa-angle-right'></span>")"></ejs-breadcrumb>
                                             </div>
-                                            <ejs-breadcrumb id="breadcrumb"
-                                                            separatorTemplate="@Html.Raw("<span class='fa-solid fa-angle-right'></span>")"></ejs-breadcrumb>
                                         </div>
                                     </div>
-                                </div>
-                            }
-                            @RenderBody()
-                        </main>
+                                }
+                                @RenderBody()
+                            </main>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    }
 
-   
-
- @*    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - Expense_Tracker - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    else
+    {
+        <div class="container mt-5">
+            @RenderBody()
         </div>
+    }
+
+    
+
+
+
+    @*    <footer class="border-top footer text-muted">
+    <div class="container">
+    &copy; 2024 - Expense_Tracker - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </div>
     </footer> *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
